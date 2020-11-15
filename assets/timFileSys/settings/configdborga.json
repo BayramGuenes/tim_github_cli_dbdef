@@ -1,0 +1,9 @@
+{
+  "DB_databases": {
+    "Logger": "",
+    "Receiver": "",
+    "Repo": ""
+  },
+  "StartOffsetTimEntityChange": 5000000000,
+  "In_PRODUCTIONSYSTEM": false
+}

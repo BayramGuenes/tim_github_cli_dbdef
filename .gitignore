@@ -1,0 +1,43 @@
+# dependencies
+/Logs/*
+/Logs/.
+*exe
+.exe
+/node_modules
+/.pnp
+.pnp.js
+
+
+# testing
+/coverage
+
+# production
+/build
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+/.idea
+.idea
+cmd/tim_cli_dborg/main
+tim_cli_dborg_log
+tim_cli_dborg_log.git
+docker-entrypoint.sh
+*/main
+
+cmd/logger/main
+cmd/receiver/main
+cmd/repo/main
+
+mdh-koeln-ivz-cn-ard-de-zertifikatskette.pem
+assets/bitbucketAccessData.txt
+bitbucketAccessData.txt
+buildApp2.sh

@@ -1,0 +1,74 @@
+FROM mdh.koeln.ivz.cn.ard.de:8080/presse/golang-builder:master-4 as builder
+
+## Use the offical Golang image to create a build artifact.
+## This is based on Debian and sets the GOPATH to /go.
+## https://hub.docker.com/_/golang
+#FROM golang:1.15 as builder
+#
+#COPY . /app
+#
+## Add the keys
+#ARG bitbucket_id
+#ARG bitbucket_token
+## Proxy-Settings
+#ARG PROXY_PROTOCOL=http://
+##ARG PROXY_DOMAIN=proxy.koeln.ivz.cn.ard.de
+#ARG PROXY_DOMAIN=proxy.wdr.de
+#ARG PROXY_PORT=8080
+#ENV HTTP_PROXY ${PROXY_PROTOCOL}${PROXY_DOMAIN}:${PROXY_PORT}
+#ENV HTTPS_PROXY $HTTP_PROXY
+#ENV http_proxy $HTTP_PROXY
+#ENV https_proxy $HTTP_PROXY
+#ENV no_proxy=mdh.koeln.ivz.cn.ard.de
+#ENV NO_PROXY=$no_proxy
+#ENV GO111MODULE=on
+#
+#WORKDIR /app
+#
+#ADD mdh-koeln-ivz-cn-ard-de-zertifikatskette.pem /etc/ssl/certs/
+#
+## We need to set our bitbucket user and his token to download the modules
+#RUN git config \
+#    --global \
+#    url."https://${bitbucket_id}:${bitbucket_token}@mdh.koeln.ivz.cn.ard.de/bitbucket".insteadOf \
+#    "https://mdh.koeln.ivz.cn.ard.de/bitbucket"
+#
+#RUN echo ${bitbucket_id} ${bitbucket_token}
+
+COPY . /app
+WORKDIR /app
+
+RUN CGO_ENABLED=0 GOOS=linux go build -o ./cmd/logger/main ./cmd/logger/main.go
+RUN CGO_ENABLED=0 GOOS=linux go build -o ./cmd/receiver/main ./cmd/receiver/main.go
+RUN CGO_ENABLED=0 GOOS=linux go build -o ./cmd/repo/main ./cmd/repo/main.go
+
+FROM mdh.koeln.ivz.cn.ard.de:8080/presse/golang:master-2 as develop
+#FROM alpine as develop
+#
+## Proxy-Settings
+#ARG PROXY_PROTOCOL=http://
+##ARG PROXY_DOMAIN=proxy.koeln.ivz.cn.ard.de
+#ARG PROXY_DOMAIN=proxy.wdr.de
+#ARG PROXY_PORT=8080
+#ENV HTTP_PROXY ${PROXY_PROTOCOL}${PROXY_DOMAIN}:${PROXY_PORT}
+#ENV HTTPS_PROXY $HTTP_PROXY
+#ENV http_proxy $HTTP_PROXY
+#ENV https_proxy $HTTP_PROXY
+#ENV no_proxy=localhost,idefix-ps-dev01-mariadb-service,*.koeln.ivz.cn.ard.de
+#ENV NO_PROXY=$no_proxy
+#
+## security updates, useful packages/tools
+#RUN apk update && \
+#    apk add \
+#        bash \
+#        curl \
+#        wget && \
+#    rm -rf /var/cache/apk/*
+
+COPY config cli/config
+COPY --from=builder /app/cmd/logger/main cli/db/logger/main
+COPY --from=builder /app/cmd/receiver/main cli/db/receiver/main
+COPY --from=builder /app/cmd/repo/main cli/db/repo/main
+COPY assets/timFileSys cli/db/timFileSys
+
+CMD exec /bin/bash -c "trap : TERM INT; sleep infinity & wait"
