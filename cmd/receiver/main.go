@@ -75,7 +75,7 @@ func reading_console(iConf conf.ConfStruct) {
 
 func writeWelcome(iConf conf.ConfStruct) {
 	fmt.Println("---------------------")
-	fmt.Println("Tim Logger")
+	fmt.Println("Tim Receiver")
 	fmt.Println("---------------------")
 	fmt.Println("Eingabe:")
 	fmt.Println("'create' zum Anlegen der Datenbank")

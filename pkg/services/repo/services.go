@@ -8,6 +8,7 @@ import (
 	//"github.com/bayramguenes/tim_utils_numrange.git"
 	//was weiss ich
 	"github.com/BayramGuenes/tim_utils_numrange"
+	//huhu
 	_ "github.com/go-sql-driver/mysql"
 
 	conf "github.com/bayramguenes/tim_github_cli_dbdef.git/internal/readConfig"

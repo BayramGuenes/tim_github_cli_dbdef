@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/bayramguenes/tim_github_cli_dbdef.git/internal/data"
+	_ "github.com/go-sql-driver/mysql"
 )
 
 // create database with parametername and delete old database/tables

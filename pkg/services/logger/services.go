@@ -2,8 +2,12 @@ package services
 
 import (
 	"database/sql"
+
 	"fmt"
 	"os"
+
+	//huhu
+	_ "github.com/go-sql-driver/mysql"
 
 	"github.com/bayramguenes/tim_github_cli_dbdef.git/internal/data"
 	"github.com/bayramguenes/tim_github_cli_dbdef.git/internal/dbinterface"

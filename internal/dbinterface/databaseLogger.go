@@ -4,6 +4,8 @@ import (
 	"database/sql"
 	"fmt"
 	"os"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
 func InsertSvnApptransactRow(iConnection, iDatabase string, iName, iText string) {
